@@ -59,7 +59,7 @@ meu conselho é ter um WSL pois no ubuntu é bem mais simples configurar, depois
 <img src="./img/par de chave.png" alt="EC2 criado na AWS" width="150" height="60"/>
 
 - depois é so confirar no main.tf qual o ssh que vai ser usado
-```tf
+```ts
 resource "aws_instance" "estudos" {
   count = 3
   ami = "ami-0c5410a9e09852edd" 
@@ -76,6 +76,8 @@ resource "aws_instance" "estudos" {
 ```
 
 # Iniciando o terraform
+### **Seria dentro da pasta onde esta o Main.ts**
+- Nesse caso **aws-terraform\ec2**
  ```bash
 terraform init
  ```
