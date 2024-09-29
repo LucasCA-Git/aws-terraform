@@ -4,11 +4,14 @@
 
 
 
-## Descrição
+# Descrição
 Este repositório contém um exemplo prático de como criar um ambiente na AWS com instâncias EC2 utilizando o Terraform. O projeto demonstra como configurar e provisionar infraestrutura na AWS de forma automatizada, com foco em boas práticas de DevOps e infraestrutura como código.
 
 ## Objetivo
 O objetivo deste projeto é criar um ambiente com **três instâncias EC2** (Elastic Compute Cloud) utilizando o Terraform. Nosso foco será a utilização do **Terraform** para provisionar a infraestrutura, então não abordaremos em detalhes a criação de uma conta AWS ou a configuração de chaves de acesso.
+
+## CI/CD com GitHub Actions
+O projeto inclui um pipeline de CI/CD configurado com GitHub Actions para automatizar a execução de comandos Terraform, facilitando a criação e destruição de recursos na AWS.
 
 ## 🤝 Colaborador
 
@@ -106,6 +109,48 @@ terraform destroy
 - Você também será solicitado a confirmar a ação. Digite "yes" para prosseguir.
 
 <img src="./img/destruindo arquitetura.png" alt="Retirando Arquitetura" width="400" height="250"/>
+
+
+## CD/CI Pipeline GitActions
+
+### Visão Geral
+Neste projeto, utilizamos o GitHub Actions para implementar um fluxo de trabalho de CI/CD que automatiza o processo de criação e gerenciamento de instâncias EC2 na AWS utilizando o Terraform. Essa abordagem proporciona eficiência, consistência e segurança no gerenciamento da infraestrutura.
+
+### Como Funciona
+
+#### 1. Estrutura do Workflow
+O workflow do GitHub Actions está configurado para ser acionado em eventos de `push` na branch principal do repositório. Isso significa que sempre que novas alterações são enviadas para a branch principal, o workflow será executado automaticamente.
+
+#### 2. Etapas do Workflow
+O fluxo de trabalho é dividido em várias etapas, cada uma com uma função específica:
+
+- **Check out do Código:** A primeira etapa usa a ação `actions/checkout@v2` para baixar o código do repositório. Isso é necessário para que as etapas subsequentes possam acessar o código e os arquivos de configuração do Terraform.
+
+- **Configuração do Terraform:** Utiliza-se a ação `hashicorp/setup-terraform@v1` para instalar a versão especificada do Terraform. Isso garante que o ambiente esteja preparado para executar os comandos do Terraform.
+
+- **Inicialização do Terraform:** A etapa `terraform init` inicializa o diretório do Terraform, baixando os provedores necessários e preparando o ambiente para a execução dos comandos de configuração.
+
+- **Planejamento do Terraform:** A etapa `terraform plan` é executada para criar um plano de execução, onde o Terraform determina quais mudanças serão aplicadas na infraestrutura. Essa etapa verifica se todas as configurações estão corretas e se as credenciais da AWS estão disponíveis.
+
+- **Aplicação do Terraform:** Finalmente, a etapa `terraform apply -auto-approve` aplica as mudanças necessárias para criar ou atualizar a infraestrutura na AWS. A opção `-auto-approve` é utilizada para evitar a necessidade de confirmação manual, permitindo que a aplicação ocorra automaticamente.
+
+#### 3. Credenciais Seguras
+As credenciais necessárias para acessar a AWS (como `AWS_ACCESS_KEY_ID` e `AWS_SECRET_ACCESS_KEY`) são armazenadas de forma segura como *Secrets* no repositório do GitHub. Essas variáveis de ambiente são referenciadas no workflow, garantindo que as credenciais não sejam expostas no código.
+
+### Vantagens do Uso de CI/CD com GitHub Actions no Projeto
+- **Automação Total:** Cada alteração no código resulta automaticamente na criação ou atualização da infraestrutura, reduzindo o tempo de espera entre desenvolvimento e implantação.
+  
+- **Detecção Precoce de Erros:** Qualquer problema na configuração do Terraform ou na conectividade com a AWS é detectado rapidamente durante a execução do workflow, permitindo correções antes que o código seja implantado.
+
+- **Rastreabilidade:** Todas as mudanças na infraestrutura são documentadas através dos commits e logs do GitHub Actions, proporcionando uma trilha de auditoria clara sobre quem fez o quê e quando.
+
+- **Facilidade de Colaboração:** A equipe pode colaborar de forma mais eficaz, sabendo que as implantações e atualizações são gerenciadas de forma padronizada e automatizada.
+
+<img src="./img/cdci.png" alt="Git actions" width="400" height="250"/>
+
+- Destroi de maneira "Manual" 
+
+
 
 ## 📝 Licença
 
